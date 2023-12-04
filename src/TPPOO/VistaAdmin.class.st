@@ -17,8 +17,9 @@ VistaAdmin >> altaViajeOrganizado [
 
 	| container nombre preciXper porcentaje valorImp ciudad actividad fechaRegre fechaSalida crear  |
 	container := Morph new.
-	container extent: modal extent - (700 @ 540).
-	container color: (Color r: 0 g: 0.7 b: 0.8).
+	container extent: modal extent - (800 @ 540).
+	modal color:( Color r:0.40 g:0.55 b:0.95).
+	container color: (Color  r: 0.80 g:0.8 b:0.80 ) .
 	container cornerStyle: #rounded.
 	modal submorphs do: [ :each | each delete ].
 	modal addMorph: container.
@@ -82,7 +83,7 @@ VistaAdmin >> altaViajeOrganizado [
 	crear := Button new.
 	crear label: 'CREAR'.
 	crear extent: 200 @ 40.
-	container color: (Color r: 0 g: 0.5 b: 0.2).
+	crear color: ( Color r:0.40 g:0.55 b:0.95).
 	crear cornerStyle: #rounded.
 	container addMorph: crear.
 	crear position: container bottomLeft + (container width / 2 @ 0)
@@ -114,17 +115,18 @@ VistaAdmin >> ingresaAdmin [
 	lateral := Morph new.
 	lateral extent: 300 @ self height.
 	lateral color: Color white.
+	lateral position: self position.
 	modal := Morph new.
-	modal color: Color red.
+	modal color: ( Color r:0.40 g:0.55 b:0.95). 
 	modal extent: self extent - (lateral width @ 0).
 	modal position: lateral topRight.
-	lateral position: self topLeft.
 	modViaje := Button new.
 	modViaje label: 'MODIFICAR VIAJES'.
-	modViaje color: (Color r: 0.40 g: 0.55 b: 0.95).
+	modViaje color: ( Color r:0.40 g:0.55 b:0.95). 
 	modViaje cornerStyle: #rounded.
 	modCliente := Button new.
 	modCliente label: 'MODIFICAR CLIENTES'.
+	modCliente  color: ( Color r:0.40 g:0.55 b:0.95). 
 	modCliente cornerStyle: #rounded.
 	modViaje position: lateral leftCenter + (20 @ 40).
 	modCliente position: lateral leftCenter - (-20 @ 40).
@@ -133,8 +135,9 @@ VistaAdmin >> ingresaAdmin [
 	lateral addMorph: modViaje.
 	lateral addMorph: modCliente.
 	cerrar := Button new.
-	cerrar label: 'cerrar'.
+	cerrar label: 'CERRAR'.
 	cerrar extent: 100 @ 30.
+	cerrar  color:( Color r:0.40 g:0.55 b:0.95). 
 	cerrar position: modViaje bottomLeft + (0 @ 40).
 	cerrar cornerStyle: #rounded.
 	lateral addMorph: cerrar.
@@ -165,11 +168,11 @@ VistaAdmin >> opcionesViaje [
 	cerrar visible: false.
 	alta := Button new.
 	alta label: 'ALTA VIAJE ESPECIAL'.
-	alta color: (Color r: 0.40 g: 0.55 b: 0.95).
+	alta color:( Color r:0.40 g:0.55 b:0.95). 
 	alta cornerStyle: #rounded.
 	baja := Button new.
 	baja label: 'BAJA'.
-	baja color: (Color r: 0.40 g: 0.55 b: 0.95).
+	baja color: ( Color r:0.40 g:0.55 b:0.95). 
 	baja cornerStyle: #rounded.
 	centro := container center.
 	text := TextMorph new.
@@ -187,6 +190,8 @@ VistaAdmin >> opcionesViaje [
 	container addMorph: text.
 	volver := Button new.
 	volver label: 'VOLVER'.
+	volver extent: 100@30.
+	volver color:( Color r:0.40 g:0.55 b:0.95). 
 	volver cornerStyle: #rounded.
 	volver position: baja bottomLeft + (0 @ 40).
 	container addMorph: volver.
@@ -201,32 +206,6 @@ VistaAdmin >> restaurarOpciones [
 modViaje   visible:true.
 modCliente    visible:true.
 cerrar   visible:true.
-]
-
-{ #category : #accessing }
-VistaAdmin >> sech: inputNombre panel: panel [
-
-	inputNombre  = '' ifFalse: [ 
-		|contenidoModel viajes |
-		viajes := EmpresaTurismo getViajes.
-		viajes do: [ :viaje |  ].
-		contenidoModel := EmpresaTurismo sechName: (inputNombre asString).
-		contenidoModel isNotNil ifTrue: [ self updateView: contenidoModel panel: panel ] ]ifTrue:[].
-]
-
-{ #category : #accessing }
-VistaAdmin >> verInfo: viaje [
-|panel conteiner |
-panel := Morph new.
-panel color: (Color r:0 g:0.5 b:0.5).
-panel extent: ((modal width -700)@modal height).
-modal addMorph: panel .
-panel position: modal position +(700@0).
-conteiner :=Morph new.
-conteiner extent:((panel width-60)@ (panel  height-50)).
-panel  addMorph: conteiner.
-conteiner position: panel position+(30@25).
-
 ]
 
 { #category : #accessing }

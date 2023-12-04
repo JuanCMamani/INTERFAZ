@@ -4,26 +4,34 @@ Class {
 	#instVars : [
 		'empresa',
 		'clientes',
-		'contratos'
+		'contratos',
+		'usuarios'
 	],
 	#classInstVars : [
-		'empresaT',
-		'contratos',
-		'clientes'
+		'usuarios'
 	],
 	#category : #'TPPOO-class'
 }
 
 { #category : #initialization }
+Sistema class >> addUsuario: usuario [ 
+usuarios add: usuario .
+
+]
+
+{ #category : #initialization }
 Sistema class >> create [
-empresaT := CargaSistema realizarInicio.
+usuarios := OrderedCollection new.
+EmpresaTurismo reiniciar.
+EmpresaTurismo create .
 
 
 ]
 
 { #category : #initialization }
-Sistema class >> getEmpresa [
-^empresaT 
-
+Sistema class >> obtenerUsuario: gmail pasword: key [
+|var|
+var:= usuarios detect:[:user | user verificarIngreso: gmail pasword: key]ifNone:[nil].
+^var.
 
 ]

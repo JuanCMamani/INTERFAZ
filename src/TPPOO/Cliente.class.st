@@ -146,6 +146,24 @@ Cliente >> getCorreo [
 ^correo 
 ]
 
+{ #category : #metodos }
+Cliente >> getInfo [
+|array|
+array := OrderedCollection new.
+array at: dni asString .
+array at: apellido asString .
+array at: correo asString .
+array at: telefono asString .
+array at: ciudad asString .
+array at: colContratosARealizar  .
+array at: colContratosCancelados   .
+array at: preferencias  asString ."8 elementos"
+^ array 
+
+
+
+]
+
 { #category : #inicializador }
 Cliente >> inicializarCon: unDni apellido: unApellido correo: unCorreo telefono: unTelefono ciudad: unaCiudad [ 
 dni :=unDni .

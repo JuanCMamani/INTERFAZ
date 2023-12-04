@@ -66,6 +66,17 @@ FechaSalida >> getFecha [
 ]
 
 { #category : #inicializador }
+FechaSalida >> getInfo [ 
+|array|
+array := Array new:2.
+array add: fecha .
+array add: cupo .
+^ array .
+
+
+]
+
+{ #category : #inicializador }
 FechaSalida >> inicializarCon: unaFecha cupo: unCupo [
 fecha := unaFecha .
 cupo := unCupo .

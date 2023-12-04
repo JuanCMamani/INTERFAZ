@@ -47,6 +47,24 @@ unaFecha := listaFechasSalida detect:[:fech | (fech verificarDisponibleEntre: fe
 ^rta
 ]
 
+{ #category : #visualizadores }
+Organizado >> getInfo [ 
+|var colPa cantD listaFe colEx x|
+var:= super getInfo.
+	colPa := (colParadas  size) asString.
+	cantD := cantDias   asString.
+	listaFe := (listaFechasSalida  size)asString .
+	colEx := self poseeExcursiones   asString.
+	x := Array new: 4.
+	x
+		at: 1 put: colPa;
+		at: 2 put: cantD;
+		at: 3 put: listaFe;
+		at: 4 put: colEx.
+		
+	^(var,x).
+]
+
 { #category : #inicializador }
 Organizado >> inicializarCon: unaCantDias [
 colParadas := OrderedCollection new.
@@ -130,6 +148,11 @@ ifFalse:[(unaOpcion = 3)
 			]]].
 
 ^exito
+]
+
+{ #category : #visualizadores }
+Organizado >> poseeExcursiones [
+^ colExcursiones isEmpty .
 ]
 
 { #category : #modificadores }

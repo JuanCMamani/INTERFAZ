@@ -32,7 +32,8 @@ fondo := Fondo crear:self .
 datos := CargaSistema realizarInicio.
 self addMorph:fondo .
 self addMorph:login.
-
+login position: self position.
+fondo position: login topRight.
 ]
 
 { #category : #initialization }

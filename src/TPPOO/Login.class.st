@@ -24,6 +24,7 @@ var inicializar.
 Login >> ingresaAdmin [
 admin:= (VistaAdmin new )ingresaAdmin .
 self addMorph: admin.
+admin position: self position.
 ]
 
 { #category : #accessing }

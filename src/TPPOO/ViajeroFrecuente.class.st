@@ -29,6 +29,15 @@ ViajeroFrecuente class >> obtenerCambioValorMilla [
 ^cambioValorMilla 
 ]
 
+{ #category : #metodos }
+ViajeroFrecuente >> getInfo [ 
+|var|
+var:= super getInfo.
+var at: sumaMillas asString.
+^ var.
+
+]
+
 { #category : #inicializador }
 ViajeroFrecuente >> inicializarCon: cantMillas [
 sumaMillas :=cantMillas.

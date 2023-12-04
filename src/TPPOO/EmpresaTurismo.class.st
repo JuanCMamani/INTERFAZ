@@ -34,7 +34,7 @@ unaEmpresa inicializarCon: unaColViajes colClientes: unaColClientes.
 
 { #category : #constructor }
 EmpresaTurismo class >> create [
-|vE1 vE2 vE3 vO1 vO2  c1 c2 c3 c4 c5 c6 c7  colP colF empresaTurismo|
+|vE1 vE2 vE3 vO1 vO2  c1 c2 c3 c4 c5 c6 c7  user1 user2 user3 colP colF empresaTurismo|
 "ct cuota; colC coleccion cuotas ; v viaje etp ; colP coleccion paradas ; c cliente"
 empresaTurismo:= self new.
 empresaTurismo inicializarCon.
@@ -124,10 +124,16 @@ Transcript show: empresaTurismo toString  ;cr.
 Transcript show:'------------------------------------Carga inicial exitosa------------------------------------';cr.
 clientes :=  empresaTurismo obtenenerClientes .
 viajes := empresaTurismo obtenenerVijes  .
+user1 := Usuario crear: 'pepe@gmail.com' pasword:'123456'  cuenta: c1 .
+user2 := Usuario crear: 'jose@gmail.com' pasword:'key123' cuenta: c2.
+user3 := Usuario crear: 'user3@gmail.com' pasword:'KEY123'  cuenta: c3.
+Sistema addUsuario: user1 .
+Sistema addUsuario: user2 .
+Sistema addUsuario: user3 .
 ]
 
 { #category : #constructor }
-EmpresaTurismo class >> getClientes [
+EmpresaTurismo class >> getCuenta [
 ^clientes .
 ]
 
@@ -143,7 +149,7 @@ clientes := nil.
 ]
 
 { #category : #constructor }
-EmpresaTurismo class >> sechName: nombre [
+EmpresaTurismo class >> seachName: nombre [
 |var|
 var:= viajes detect:[:vi| vi verificarNombre: nombre] ifNone: [nil].  
 ^var.
