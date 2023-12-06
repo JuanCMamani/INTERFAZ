@@ -4,8 +4,7 @@ Class {
 	#instVars : [
 		'principal',
 		'fondo',
-		'login',
-		'datos'
+		'login'
 	],
 	#category : #'TPPOO-componentes'
 }
@@ -15,7 +14,6 @@ Ventana class >> crear [
 |vent|
 vent := self new .
 vent  iniciar.
-Sistema create.
 ^vent .
 
 ]
@@ -29,17 +27,10 @@ Ventana >> getFondo [
 Ventana >> iniciar [
 login:=Login crearLogin: self.
 fondo := Fondo crear:self .
-datos := CargaSistema realizarInicio.
 self addMorph:fondo .
 self addMorph:login.
 login position: self position.
 fondo position: login topRight.
-]
-
-{ #category : #initialization }
-Ventana >> manejarClik:event [
-Transcript show: 'Hiciste clic en el botón. ¡Evento capturado!'.
-
 ]
 
 { #category : #initialization }

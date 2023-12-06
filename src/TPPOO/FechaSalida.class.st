@@ -33,7 +33,7 @@ FechaSalida >> cupoDisponible [
 
 { #category : #inicializador }
 FechaSalida >> cupoPosible: cant [
-^(cupo -cant )>=0.
+^(cupo asInteger  -cant asInteger )>=0.
 
 
 
@@ -41,7 +41,7 @@ FechaSalida >> cupoPosible: cant [
 
 { #category : #inicializador }
 FechaSalida >> descontarCupos: unNumero [
-cupo := cupo-unNumero .
+cupo := cupo-unNumero asInteger .
 
 
 ]
@@ -56,6 +56,13 @@ FechaSalida >> equals: unaFecha [
 { #category : #visualizadores }
 FechaSalida >> fechaPosible: unCantPer [
 ^ cupo>=unCantPer .
+]
+
+{ #category : #inicializador }
+FechaSalida >> getCupo [
+^ cupo .
+
+
 ]
 
 { #category : #inicializador }

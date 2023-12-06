@@ -77,6 +77,7 @@ ifFalse: [ exito :=false. ].
 	 colContratosARealizar remove: elContrato.
 	self obtenerReembolso: elContrato  .
 	 ].
+self changed .
 ^exito.
 	 
 
@@ -117,13 +118,14 @@ Cliente >> contratarPaquete: unViaje fechaViaje: unaFecha cantPersonas: unaCantP
 	exito := true.
 	((unViaje verificarCupo: unaFecha cantPersonas: unaCantPersonas)  )
 		ifTrue: [
-			(unVoF )
+			(unVoF  )
 			ifTrue: [
 		   colContratosARealizar add: (Flexible crearCon:unViaje  cantPersonas:unaCantPersonas  fechaViaje:unaFecha  cantCuotas:unaCantidad )]   
 			ifFalse: [ 
-				 colContratosARealizar add: (Contrato  crearCon:unViaje  cantPersonas:unaCantPersonas  fechaViaje:unaFecha  cantCuotas:unaCantidad ) ]
+				 colContratosARealizar add: (Contrato  crearCon:unViaje  cantPersonas:unaCantPersonas  fechaViaje:unaFecha  cantCuotas:unaCantidad ) ].
 			
-			 ] ifFalse:[exito:=false.]. 
+			self changed . 
+			] ifFalse:[exito:=false.]. 
 	
 	^ exito
 ]
@@ -138,6 +140,7 @@ colContratosARealizar do:[:unContrato |
 	[colContratosARealizar  remove: unContrato  .	
 	self agregarContratoEfectivizado: unContrato .
 	 rta:= true]].
+self changed .
 	^rta
 ]
 
@@ -184,9 +187,14 @@ Cliente >> obtenerColContratos [
 ]
 
 { #category : #visualizadores }
+Cliente >> obtenerContratoARealizar [
+^ colContratosARealizar .
+]
+
+{ #category : #visualizadores }
 Cliente >> obtenerContratoARealizar:unID [
 |cont|
-cont := colContratosARealizar detect:[:cadCt | cadCt verificarId: unID ]ifNone:[^nil].
+cont := colContratosARealizar detect:[:cadCt | cadCt verificarId: unID ]ifNone:[nil].
 ^cont 
 ]
 
@@ -244,7 +252,10 @@ rta:=contrato opcionesModificacionContrato: unaOpcion modificacion: unaModificac
 
 { #category : #metodos }
 Cliente >> realizarPagoCuota:unContrato cantCuotasApagar:cant [
-^ unContrato pagarCantCuotas: cant.
+|var|
+var:= unContrato pagarCantCuotas: cant.
+self changed .
+^ var
 
 ]
 

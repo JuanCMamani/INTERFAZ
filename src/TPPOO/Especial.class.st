@@ -5,7 +5,8 @@ Class {
 		'ciudad',
 		'actividad',
 		'fechaRegreso',
-		'fechaSalida'
+		'fechaSalida',
+		'disponibilidad'
 	],
 	#category : #'TPPOO-class'
 }
@@ -22,7 +23,7 @@ Especial class >> crearCon: unNombre precioBase: unPrecioBase valorImpuesto: unV
 		inicializarCon: unaCiudad
 		actividad: unaActividad
 		fechaRegreso: unaFechaRegreso
-		fechaSalidaCupo: unaFechaYcupo.
+		fechaSalidayCupo: unaFechaYcupo.
 	^ unEspecial
 ]
 
@@ -42,7 +43,7 @@ ifTrue: [  rta := true].
 
 { #category : #visualizadores }
 Especial >> getFechaSalida [
-^ fechaSalida getFecha  .
+^ fechaSalida  .
 ]
 
 { #category : #visualizadores }
@@ -52,28 +53,21 @@ Especial >> getFechaSalidaYcupo [
 
 { #category : #'verificación' }
 Especial >> getInfo [ 
-|var ciud act feS feR x |
+|var ciud act feS feR x disp |
 var:= super getInfo.
 	ciud := ciudad  asString.
 	act := actividad  asString.
-	feS := fechaSalida  asString.
+	feS := (fechaSalida  ) asString.
 	feR := fechaRegreso  asString.
-	x := Array new: 4.
+	disp:= (disponibilidad   )asString.
+	x := Array new: 5.
 	x
 		at: 1 put: ciud;
 		at: 2 put: act;
 		at: 3 put: feS;
-		at: 4 put: feR.
-		
+		at: 4 put: feR;
+		at: 5 put: disp .
 	^(var,x).
-]
-
-{ #category : #printing }
-Especial >> inicializarCon: unaCiudad actividad: unaActividad fechaRegreso: unaFechaRegreso fechaSalidaCupo: unaFechaYcupo [
-ciudad := unaCiudad.
-actividad := unaActividad.
-fechaRegreso := unaFechaRegreso .
-fechaSalida := unaFechaYcupo .
 ]
 
 { #category : #printing }
@@ -81,7 +75,8 @@ Especial >> inicializarCon: unaCiudad actividad: unaActividad fechaRegreso: unaF
 ciudad := unaCiudad.
 actividad := unaActividad.
 fechaRegreso := unaFechaRegreso .
-fechaSalida := unaFechaYcupo .
+fechaSalida := unaFechaYcupo getFecha .
+disponibilidad := unaFechaYcupo getCupo .
 ]
 
 { #category : #printing }
@@ -91,7 +86,7 @@ Especial >> mostrarFechas [
 
 { #category : #visualizadores }
 Especial >> obtenerFecha [
-^fechaSalida 
+^fechaSalida getFecha 
 ]
 
 { #category : #metodos }
@@ -145,15 +140,16 @@ fechaSalida setFecha: unFecha.
 
 { #category : #printing }
 Especial >> toString [ 
-^ (super toString  )asString,',ciudad: ',ciudad asString ,',Fecha Regreso:',fechaRegreso asString,fechaSalida toString .
+^ (super toString  )asString,',ciudad: ',ciudad asString ,',Fecha Regreso:',fechaRegreso asString,' Fecha Salida:',fechaSalida asString ,' Cupo:',disponibilidad  asString.
 ]
 
 { #category : #'verificación' }
 Especial >> verificarCupo: unaFecha cantPersonas: unaCantPersonas [
 |exito|
 exito := false.
-(fechaSalida cupoPosible: unaCantPersonas )
-ifTrue:[exito := true.fechaSalida descontarCupos: unaCantPersonas ].
+( disponibilidad -(unaCantPersonas asInteger ) >=0 )
+ifTrue:[exito := true.
+	disponibilidad := disponibilidad -(unaCantPersonas asInteger )  ].
 ^exito
 ]
 

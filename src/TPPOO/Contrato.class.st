@@ -11,7 +11,8 @@ Class {
 		'fechaViaje',
 		'cantCuotas',
 		'colCuotas',
-		'colExcursionesARealizar'
+		'colExcursionesARealizar',
+		'cantPagadas'
 	],
 	#classVars : [
 		'nro'
@@ -67,6 +68,12 @@ Contrato >> cargarCuota: unaCuota [
 colCuotas add: unaCuota.
 ]
 
+{ #category : #modificadores }
+Contrato >> contratoPagado [
+	
+^ (cantPagadas=cantCuotas )
+]
+
 { #category : #visualizadores }
 Contrato >> getCantPersonas [
 ^cantPersonas 
@@ -84,6 +91,35 @@ Contrato >> getId [
 ]
 
 { #category : #visualizadores }
+Contrato >> getInfo [
+
+	| iden fe precio viaje cantP  feV cantT  excursiones x pagadas|
+	excursiones:='SI'.
+	iden := id asString.
+	viaje :=  unViaje getNombre  asString.
+	feV:= fechaViaje asString.
+	fe := fecha asString.
+	precio := precioTotal  asString.
+	cantP:= cantPersonas asString.
+	cantT:= cantCuotas asString.
+ (colExcursionesARealizar isEmpty)ifTrue:[excursiones:='NO'].
+pagadas := cantPagadas asString.
+	x := Array new: 9.
+	x
+		at: 1 put: iden;
+		at: 2 put: viaje ;
+		at: 3 put: feV ;
+		at: 4 put: precio ;
+		at: 5 put: fe ;
+		at: 6 put: cantP  ;
+		at: 7 put: cantT   ;
+		at: 8 put: excursiones  ;
+		at: 9 put: pagadas .
+	^x
+
+]
+
+{ #category : #visualizadores }
 Contrato >> getPrecioTotal [
 ^ precioTotal .
 
@@ -92,7 +128,7 @@ Contrato >> getPrecioTotal [
 { #category : #inicializador }
 Contrato >> inicializarCon: viaje cantPersonas: unaCantPersonas fechaViaje: unaFechaViaje cantCuotas: uncant [
 "se utiliza un metodo de clase nextId"
-id:= Contrato nextId  .
+id:= self class  nextId  .
 fecha :=Date today .
 unViaje := viaje.
 efectivizado :=false.
@@ -101,22 +137,26 @@ cantPersonas := unaCantPersonas.
 fechaViaje := unaFechaViaje.
 colCuotas := nil .
 cantCuotas := uncant  .
+cantPagadas :=0.
 colExcursionesARealizar := OrderedCollection new.
+self changed .
 ]
 
 { #category : #inicializador }
-Contrato >> iniciarColcuotas:uncant  plus: valor [
-|nuevCol precioPorcuota fechaC |
-nuevCol := OrderedCollection  new.
- precioPorcuota := ( precioTotal+valor  )// (uncant ) .
+Contrato >> iniciarColcuotas: unCant  plus: valor [
+| precioPorcuota fechaC |
+colCuotas:= OrderedCollection  new.
+precioTotal := precioTotal+valor  .
+ precioPorcuota := ( precioTotal  ) asInteger  // (unCant asInteger  ) .
 fechaC := Date today .
-(uncant=1)ifTrue: [  fechaC:= fechaC subtractDays: 30.].
-1 to: uncant  do: [:indice |
+(unCant asInteger  =1)ifTrue: [  fechaC:= fechaC subtractDays: 30.].
+1 to:( unCant asInteger ) do: [:indice |
     | cuota |
-    cuota := Cuota crearCon: precioPorcuota  fechaProximoVencimiento: (fechaC:=fechaC addDays: 30)  .
-nuevCol  add: cuota . "Agrega el objeto a la colección"
+    fechaC := fechaC addDays: 30.
+    cuota := Cuota crearCon: (precioPorcuota asInteger  ) fechaProximoVencimiento: (fechaC  ).
+    colCuotas  add: cuota. "Agrega el objeto a la colección"
 ].
-colCuotas:= nuevCol .
+self changed .
 
 ]
 
@@ -174,14 +214,20 @@ ifTrue:[
 { #category : #metodos }
 Contrato >> pagarCantCuotas: unCant [
 
-	| cont |
+	| cont val |
+	val := false.
 	cont := 1.
-colCuotas do: [ :cuota |
-		            cuota obtenerEstaPago ifFalse: [
-			            cont <= unCant ifTrue: [
-				            cuota pagar.
-				            cont := cont + 1 ] ] ].
-^ true.
+	((unCant asInteger + cantPagadas) <= (cantCuotas asInteger )) ifTrue: [ 
+		colCuotas do: [ :cuota | 
+			cuota obtenerEstaPago ifFalse: [ 
+				(cont <= (unCant asInteger )) ifTrue: [ 
+					cuota pagar.
+					cantPagadas := cantPagadas + 1.
+					cont := cont + 1 ] ] ].
+		val := true .
+		self changed .
+		].
+	^ val
 ]
 
 { #category : #metodos }
@@ -226,17 +272,13 @@ Contrato >> verificarContrato [
 
 { #category : #verification }
 Contrato >> verificarEfectivizacion [
-|rta cuotaNoPaga laFecha|
-rta:= false.
-laFecha:=((Date today)subtractDays: 1).
-((fechaViaje)=laFecha  )
-ifTrue:
-[
-	cuotaNoPaga := colCuotas detect:[:unaCuota | ((unaCuota obtenerEstaPago) not) ]ifNone:[nil].
-	(cuotaNoPaga)
-	ifNil: [rta:=true]
-].
-^rta
+
+	| rta laFecha |
+	rta := false.
+	laFecha := Date today subtractDays: 1.
+	fechaViaje = laFecha ifTrue: [ 
+		rta := cantCuotas asInteger = cantPagadas asInteger ].
+	^ rta
 ]
 
 { #category : #verification }
@@ -251,7 +293,11 @@ dias:= fechaViaje subtractDate: (Date today) .
 
 { #category : #verification }
 Contrato >> verificarId:unID [
-^ id=unID 
+|val|
+Transcript show: 'preimero:(',unID asString,')','segundo:(',id asStringWithCommas ,')'.
+val:= (id asInteger=unID asInteger ).
+Transcript show: 'El igual:(',val asString,')'.
+^ val
 
 ]
 

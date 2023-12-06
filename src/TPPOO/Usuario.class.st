@@ -31,6 +31,11 @@ cuenta := cliente .
 ]
 
 { #category : #initialization }
+Usuario >> geContrato [
+^ cuenta obtenerContratoARealizar .
+]
+
+{ #category : #initialization }
 Usuario >> getCuenta [ 
 ^ cuenta .
 ]

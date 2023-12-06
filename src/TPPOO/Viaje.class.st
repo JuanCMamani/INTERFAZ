@@ -52,6 +52,11 @@ Viaje >> getNombre [
 ^ nombre .
 ]
 
+{ #category : #modificadores }
+Viaje >> getPlus [
+^ valorDelPlus .
+]
+
 { #category : #'verificación' }
 Viaje >> getValorDelPlus [
 ^ valorDelPlus  .
@@ -75,7 +80,7 @@ Viaje >> mostrarFechas [
 { #category : #visualizadores }
 Viaje >> obtenerPrecioTotal: unCantPersona [
 
-^((((precioBase +valorImpuesto ))asInteger )*unCantPersona  ) 
+^((((precioBase +valorImpuesto ))asInteger )*unCantPersona asInteger  ) 
 ]
 
 { #category : #visualizadores }
