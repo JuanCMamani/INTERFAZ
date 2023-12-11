@@ -52,7 +52,7 @@ colExcursionesARealizar add: unaExcursion
 { #category : #inicializador }
 Contrato >> agregarExcursion: excursion cantClientes: cantClientes [
 |rta|
-rta := ((( 	Date today )addDays: 7) <= fechaViaje ) & (cantClientes < cantPersonas) .
+rta := self agregarExcusionPosible: cantClientes .
 	(rta)
 	ifTrue:[(unViaje verificarViaje)
 		ifTrue:[colExcursionesARealizar add: excursion ]
@@ -63,6 +63,13 @@ rta := ((( 	Date today )addDays: 7) <= fechaViaje ) & (cantClientes < cantPerson
 ^rta.
 ]
 
+{ #category : #visualizadores }
+Contrato >> agregarExcusionPosible: cantClientes [
+|rta|
+rta := ((( 	Date today )addDays: 7) <= fechaViaje ) & (cantClientes < cantPersonas) .
+	^rta
+]
+
 { #category : #inicializador }
 Contrato >> cargarCuota: unaCuota [
 colCuotas add: unaCuota.
@@ -70,8 +77,11 @@ colCuotas add: unaCuota.
 
 { #category : #modificadores }
 Contrato >> contratoPagado [
-	
-^ (cantPagadas=cantCuotas )
+
+	Transcript
+		show: 'pagadas:' , cantPagadas asString, ' cantCuotas: ' , cantCuotas asString;
+		cr.
+	^ cantPagadas asInteger = cantCuotas asInteger
 ]
 
 { #category : #visualizadores }
@@ -117,6 +127,14 @@ pagadas := cantPagadas asString.
 		at: 9 put: pagadas .
 	^x
 
+]
+
+{ #category : #visualizadores }
+Contrato >> getInfoColExcursiones [
+|var|
+var := OrderedCollection new.
+colExcursionesARealizar do:[ :va| var add: va getInfo].
+^var.
 ]
 
 { #category : #visualizadores }

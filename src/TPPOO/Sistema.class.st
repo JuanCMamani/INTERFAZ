@@ -61,18 +61,17 @@ Transcript clear .
 Transcript show: '------------------------------------Carga Inicial Del Sistema------------------------------------';cr.
 "creacion de viajes"
 "creacion de viajes Especiales"
-vE1 := (Especial crearCon: 'lollapaloza 2024'  precioBase: 20000 valorImpuesto: 3000 ciudad: 'Buenos Aires' actividad: 'lollapaloza' fechaRegreso:    (Date year: 2024 month:3 day:17)  fechaSalidaCupo:   (FechaSalida crearCon: (Date year: 2024 month:3 day:13) cupo:15) valorDelPlus: 5000).
-vE2 := (Especial crearCon: 'Tomorrowland 2024'  precioBase:100000 valorImpuesto: 4000 ciudad: 'Boom' actividad: 'Tomorrowland' fechaRegreso:    (Date year: 2024 month:3 day:29)  fechaSalidaCupo:(FechaSalida crearCon:(Date year: 2024 month:3 day:18)  cupo:20) valorDelPlus:10000).
-"cargaDeviajes"
+vE1 := (Especial crearCon: 'lollapaloza 2024'  precioBase: 20000 valorImpuesto: 3000 valorDelPlus: 5000   fechasDisponibles:   (SortedCollection with: (FechaSalida crearCon: (Date year: 2024 month:3 day:13) cupo:15 ) )ciudad: 'Buenos Aires'  actividad: 'lollapaloza' fechaRegreso:    (Date year: 2024 month:3 day:17) ).
+vE2:= Especial crearCon: 'Tomorrowland 2024'  precioBase: 100000 valorImpuesto: 4000 valorDelPlus: 1000   fechasDisponibles:   (SortedCollection with: (FechaSalida crearCon:(Date year: 2024 month:3 day:18) cupo:20 ) )ciudad: 'Boom'  actividad:  'Tomorrowland' fechaRegreso:   (Date year: 2024 month:3 day:29).
+vE3:=Especial crearCon:'UMT 2024' precioBase: 130000  valorImpuesto: 60000  valorDelPlus: 70000 fechasDisponibles:   (SortedCollection with: (FechaSalida crearCon:(Date year: 2024 month:3 day:19)  cupo:30)) ciudad: 'Miami' actividad: 'Ultra Music Festival' fechaRegreso: (Date year: 2024 month:3 day:24)  .
 empresaTurismo cargarViaje:vE1.
 empresaTurismo cargarViaje:vE2.
-vE3:=vE1 := (Especial crearCon: 'UMT 2024'  precioBase:130000 valorImpuesto: 60000 ciudad: 'Miami' actividad: 'Ultra Music Festival' fechaRegreso:    (Date year: 2024 month:3 day:24)  fechaSalidaCupo:   (FechaSalida crearCon: (Date year: 2024 month:3 day:19)  cupo:30)valorDelPlus:70000).
 empresaTurismo cargarViaje:vE3.
 
 "Viaje Organizado"
 "creacion de col paradas"
 "crearCon:info cantDias:unaCantDias lugar: unLugar tipoPension: unTipoPension hotel: unHotel listaActividades: unaListaActividades excursioneOpcionales: unaColExc"
-colP :=OrderedCollection new.colP add:(Etapa crearCon:'dia 2 llegada 8:00'cantDias:1 lugar:'Roma'  tipoPension: 'pension Completa' hotel: 'Villa del Mare' listaActividades: 'traslado al hotel y cena bienvenida' );
+colP :=OrderedCollection  new.colP add:(Etapa crearCon:'dia 2 llegada 8:00'cantDias:1 lugar:'Roma'  tipoPension: 'pension Completa' hotel: 'Villa del Mare' listaActividades: 'traslado al hotel y cena bienvenida' );
 add:(Etapa crearCon:'dia 3'cantDias:1 lugar:'Roma'  tipoPension: 'pension Completa' hotel: 'Villa del Mare' listaActividades: 'visita Coliseo Romano,Foro Romano y el Vatticano');add:(
 Etapa crearCon:'dia 4'cantDias:1 lugar:'Florencia'  tipoPension: 'Todo incluido' hotel: 'La Dolce Vita Resort' listaActividades: 'traslado Florenica y tour'
 );add:(
@@ -81,13 +80,14 @@ Etapa crearCon:'dia 5,6'cantDias:2 lugar:'Florencia'  tipoPension: 'Todo incluid
 Etapa crearCon:'dia 7'cantDias:1 lugar:'Venecia'  tipoPension: 'solo alojamiento' hotel: 'Palazzo Ducale' listaActividades: 'traslado Venecia,paseo en gondola'
 ).
 "creacion de Fechas y cupos"
-colF :=OrderedCollection  with: (FechaSalida crearCon: (Date year: 2024 month:3 day: 12 ) cupo:10)
-with:(FechaSalida crearCon: (Date year: 2024 month:3 day: 15 ) cupo: 15)
-with: (FechaSalida crearCon: (Date year: 2024 month:3 day: 20 ) cupo: 30).
+colF :=OrderedCollection  new.
+colF add: (FechaSalida crearCon: (Date year: 2024 month:3 day: 12 ) cupo:10);
+add:(FechaSalida crearCon: (Date year: 2024 month:3 day: 15 ) cupo: 15);
+add: (FechaSalida crearCon: (Date year: 2024 month:3 day: 20 ) cupo: 30).
 "creacion de Viaje Organizado 1"
 "crearCon: unNombre  precioBase: unPrecioBase  valorImpuesto: unValorImpuesto colParadas: unaColParadas cantDias: unaCantDias
 listaFechasSalidaDisponibles:listaFechas  valorDelPlus: unPorcentaje"
-vO1:=(Organizado crearCon: 'ViajeO Italia'  precioBase: 400000  valorImpuesto: 60000 colParadas: colP cantDias: 7 listaFechasSalidaDisponibles: colF valorDelPlus: 5000 excursiones:nil).
+vO1:= Organizado crearCon: 'ViajeO Italia'  precioBase: 400000  valorImpuesto: 60000 valorDelPlus: 5000 fechasDisponibles: colF colParadas: colP cantDias: 7  excursiones: nil.
 "segundo viaje Organizado"
 "creacion de col paradas"
 colP:=OrderedCollection new.
@@ -98,11 +98,12 @@ add:(Etapa crearCon:'dia 5'cantDias:2 lugar:'Hiroshima'  tipoPension: 'Todo incl
 add:(Etapa crearCon:'dia 6-7'cantDias:1 lugar:'Hiroshima'  tipoPension: 'Todo incluido' hotel: 'Mitsui Garden' listaActividades: 'Dia libre,Oportunidad para tomar un ferry a la isla de Miyajima.');
 add:(Etapa crearCon:'dia 8'cantDias:1 lugar:'Yamanashi'  tipoPension: 'solo alojamiento' hotel: ' New Hiroden' listaActividades: 'Viaje al monte fuji').
 "creacion de Fechas y cupos"
-colF := OrderedCollection  with: (FechaSalida crearCon:(Date year: 2024 month:3 day: 21 )  cupo:10)
-with:(FechaSalida crearCon: (Date year: 2024 month:3 day: 15 ) cupo:15)
-with:( FechaSalida crearCon: (Date year: 2024 month:3 day: 12 ) cupo: 18).
+colF := OrderedCollection new.
+   colF add: (FechaSalida crearCon:(Date year: 2024 month:3 day: 21 )  cupo:10);
+add:(FechaSalida crearCon: (Date year: 2024 month:3 day: 15 ) cupo:15);
+add:( FechaSalida crearCon: (Date year: 2024 month:3 day: 12 ) cupo: 18).
 "creacion de Viaje Organizado 2"
-vO2:=Organizado crearCon: 'ViajeO Japon'  precioBase: 500000  valorImpuesto: 80000 colParadas: colP cantDias: 8 listaFechasSalidaDisponibles:colF valorDelPlus:10000 excursiones:nil.
+vO2:=  Organizado crearCon: 'ViajeO Japon'  precioBase: 500000   valorImpuesto: 80000 valorDelPlus: 10000 fechasDisponibles: colF colParadas: colP cantDias: 8  excursiones: nil.
 "carga de viajes Organizados"
 empresaTurismo cargarViaje:vO1.
 empresaTurismo cargarViaje:vO2.

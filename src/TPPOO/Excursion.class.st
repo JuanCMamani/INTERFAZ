@@ -36,12 +36,24 @@ nro:=nil.
 
 { #category : #comparing }
 Excursion >> equals: unId [
-^ id = unId 
+^ id  asInteger= unId asInteger .
+]
+
+{ #category : #printing }
+Excursion >> getInfo [ 
+|x|
+x := Array new:3.
+x at:1 put: id  .
+x at:2 put: info  .
+x at:3 put: costo   .
+^x
+
+
 ]
 
 { #category : #inicializador }
 Excursion >> inicializarCon:infoExcursion costo:unCosto [ 
-id:= Excursion  nextId .
+id:= self class  nextId .
 info :=infoExcursion .
 costo := unCosto .
 ]

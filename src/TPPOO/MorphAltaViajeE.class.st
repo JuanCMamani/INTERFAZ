@@ -4,9 +4,7 @@ Class {
 	#instVars : [
 		'ciudad',
 		'actividad',
-		'fechaRegre',
-		'fechaSalida',
-		'disponibilidad'
+		'fechaRegre'
 	],
 	#category : #'TPPOO-componentes'
 }
@@ -26,18 +24,9 @@ MorphAltaViajeE >> crearViaje [
 	condicion := self verificaCondicion.
 	condicion
 		ifTrue: [ 
-			| var |
-			var := Especial
-				       crearCon: nombre text asString
-				       precioBase: preciXper text asString
-				       valorImpuesto: valorImp text asString
-				       ciudad: ciudad text asString
-				       actividad: actividad text asString
-				       fechaRegreso:
-				       (Date readFrom: fechaRegre text asString readStream)
-				       fechaSalidaCupo:
-				       (Date readFrom: fechaSalida text asString readStream)
-				       valorDelPlus: porcentaje text asString.
+			| var cupo|
+			cupo:= fechasDisponibles getColCupos .
+			var := Especial crearCon: nombre text asString  precioBase: preciXper text asString valorImpuesto: valorImp text asString valorDelPlus:  porcentaje text asString fechasDisponibles: cupo ciudad: ciudad text asString actividad: actividad text asString fechaRegreso:   (Date readFrom: fechaRegre text asString readStream). 
 			empresa cargarViaje:  var.
 			mensaje := '¡Viaje creado con exito!'.
 			mensaje := UIManager inform: mensaje ]
@@ -60,30 +49,17 @@ MorphAltaViajeE >> iniciarMorphAltaViaje: emp [
 	actividad ghostText: '   Actividades a realizar'.
 	actividad extent: wid.
 	actividad cornerStyle: #rounded.
-	fechaSalida := RubTextFieldMorph new.
-	fechaSalida ghostText: '   Fecha de salida'.
-	fechaSalida extent: wid.
-	fechaSalida cornerStyle: #rounded.
 	fechaRegre := RubTextFieldMorph new.
 	fechaRegre ghostText: '   Fecha de regreso'.
 	fechaRegre extent: wid.
 	fechaRegre cornerStyle: #rounded.
 	
-	disponibilidad  := RubTextFieldMorph new.
-	disponibilidad ghostText: '  Disponibilidad'.
-	disponibilidad extent: wid.
-	disponibilidad cornerStyle: #rounded.
-	
 	self addMorph: ciudad.
 	self addMorph: actividad.
-	self addMorph: fechaSalida.
 	self addMorph: fechaRegre.
-	self addMorph: disponibilidad .
-	ciudad position: valorImp position + (0 @ 40).
+	ciudad position: fechasDisponibles  position + (0 @ 40).
 	actividad position: ciudad position + (0 @ 40).
-	fechaSalida position: actividad position + (0 @ 40).
-	fechaRegre position: fechaSalida position + (0 @ 40).
-	disponibilidad  position: fechaRegre  position + (0 @ 40).
+	fechaRegre position: actividad  position + (0 @ 40).
 	self addMorph: crear.
 	crear bottomLeft: ( self bottomCenter -(crear width//2 @ 10)).
 	crear mouseAction: [ self crearViaje ]

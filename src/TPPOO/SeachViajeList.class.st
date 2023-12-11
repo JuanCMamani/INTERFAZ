@@ -13,15 +13,6 @@ Class {
 }
 
 { #category : #initialization }
-SeachViajeList class >> crear [
-|var|
-var:= self new.
-var iniciarSeachViaje.
-^var.
-	
-]
-
-{ #category : #initialization }
 SeachViajeList class >> crear: emp [
 |var|
 var:= self new.
@@ -110,5 +101,5 @@ listItem ifNotNil:[
 { #category : #accessing }
 SeachViajeList >> updateView: val [
 	listItem  submorphs do: [ :each | each delete ].
-	listItem addMenuItem: val.
+	listItem addMenuItem: val. 
 ]

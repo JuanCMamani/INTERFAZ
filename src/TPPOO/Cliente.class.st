@@ -63,9 +63,10 @@ contrato:=colContratosARealizar  detect:[:unContrato | unContrato verificarRefer
 Cliente >> cancelarContrato: idContato [
 |elContrato exito elViaje |
 exito :=true.
-elContrato:= self obtenerContratoARealizar: idContato .
+elContrato:= self obtenerContratoARealizar: idContato asInteger .
 (elContrato isNotNil )
 ifTrue: [ elViaje:=(elContrato obtenerViaje).
+	Transcript show: 'SE ENCONTRO COntrato'.
 	(elViaje verificarViaje)
 	ifTrue: [ elViaje actualizarDisponibilidad: elContrato getCantPersonas  fechaSalida: elContrato getFechaViaje.
 		  ] 

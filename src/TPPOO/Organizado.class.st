@@ -4,32 +4,30 @@ Class {
 	#instVars : [
 		'colParadas',
 		'cantDias',
-		'listaFechasSalida',
 		'colExcursiones'
 	],
 	#category : #'TPPOO-class'
 }
 
 { #category : #constructor }
-Organizado class >> crearCon: unNombre  precioBase: unPrecioBase  valorImpuesto: unValorImpuesto colParadas: unaColParadas cantDias: unaCantDias
-listaFechasSalidaDisponibles:listaFechas  valorDelPlus: unPorcentaje excursiones: unaColExcursiones [
+Organizado class >> crearCon: unNombre  precioBase: unPrecioBase valorImpuesto: unValorImpuesto valorDelPlus: unvalor fechasDisponibles: unaCol colParadas: unaColParadas cantDias: unaCantDias  excursiones: unaColExcursiones [
 "Usar este metodo que tiene el atributo porcentaje"
 |unOrganizado|
-unOrganizado := self crearCon: unNombre  precioBase: unPrecioBase valorImpuesto: unValorImpuesto valorDelPlus: unPorcentaje.
-unOrganizado inicializarCon: unaCantDias listaFechas:listaFechas colParadas:unaColParadas excursiones:  unaColExcursiones.
+unOrganizado := self crearCon: unNombre  precioBase: unPrecioBase valorImpuesto: unValorImpuesto valorDelPlus: unvalor fechasDisponibles: unaCol .
+unOrganizado inicializarCon: unaCantDias colParadas:unaColParadas excursiones: unaColExcursiones.
 ^unOrganizado
 ]
 
 { #category : #modificadores }
 Organizado >> actualizarDisponibilidad: unCant fechaSalida: unaFecha [
 |fechaCupo|
-fechaCupo := listaFechasSalida  detect:[:fech | fech equals: unaFecha ].
-(fechaCupo isNil)ifFalse: [  fechaCupo agregarCupos: unCant  ]. 
+fechaCupo := fechasDisponibles   detect:[:fech | fech equals: unaFecha ].
+fechaCupo ifNotNil: [  fechaCupo agregarCupos: unCant ]. 
 ]
 
 { #category : #inicializador }
 Organizado >> cargarFechaSalida: unaFechaSalida [
-listaFechasSalida add: unaFechaSalida.
+fechasDisponibles  add: unaFechaSalida.
 ]
 
 { #category : #inicializador }
@@ -37,48 +35,48 @@ Organizado >> cargarParada: unaParada [
 colParadas add: unaParada .
 ]
 
-{ #category : #metodos }
-Organizado >> disponibleEntre:  fecha1 y: fecha2 [
-|rta unaFecha|
-rta := false.
-"(fecha,boolean,cupo)"
-unaFecha := listaFechasSalida detect:[:fech | (fech verificarDisponibleEntre: fecha1  y: fecha2)].
-(unaFecha isNotNil )ifTrue: [ rta:=true.].
-^rta
+{ #category : #visualizadores }
+Organizado >> getColExcursionInfo [
+
+	|    colEx |
+	colEx := OrderedCollection new.
+	colExcursiones do: [ :va | colEx  add: va getInfo ].
+	
+	^  colEx 
 ]
 
 { #category : #visualizadores }
-Organizado >> getInfo [ 
-|var colPa cantD listaFe colEx x|
-var:= super getInfo.
-	colPa := (colParadas  size) asString.
-	cantD := cantDias   asString.
-	listaFe := (listaFechasSalida  size)asString .
-	colEx := self poseeExcursiones   asString.
-	x := Array new: 4.
+Organizado >> getInfo [
+
+	| var colPa cantD  colEx x |
+	var := super getInfo.
+	colPa := OrderedCollection new.
+	colEx := OrderedCollection new.
+	colParadas do: [ :va | colPa add: va getInfo ].
+	cantD := cantDias asString.
+	colExcursiones do: [ :va | colEx  add: va getInfo ].
+	x := Array new: 3.
 	x
 		at: 1 put: colPa;
 		at: 2 put: cantD;
-		at: 3 put: listaFe;
-		at: 4 put: colEx.
-		
-	^(var,x).
+		at: 3 put: colEx.
+
+	^ var , x
 ]
 
 { #category : #inicializador }
 Organizado >> inicializarCon: unaCantDias [
 colParadas := OrderedCollection new.
-listaFechasSalida :=OrderedCollection new .
+fechasDisponibles  :=OrderedCollection new .
 cantDias := unaCantDias .
 colExcursiones := OrderedCollection new.
 ]
 
 { #category : #inicializador }
-Organizado >> inicializarCon: unaCantDias listaFechas:listaFechas colParadas:unaColParada excursiones: unaColExcursiones [
+Organizado >> inicializarCon: unaCantDias colParadas:unaColParada excursiones:  unaColExcursiones [
 |var|
 var:=unaColExcursiones.
 (unaColExcursiones isNil)ifTrue: [ var:= OrderedCollection new. ] .
-listaFechasSalida:= listaFechas  .
 cantDias := unaCantDias .
 colParadas:= unaColParada .
 colExcursiones := var.
@@ -90,7 +88,7 @@ Organizado >> mostrarFechas [
 unasFechas := ''.
 (self)
 ifNotNil:[
-listaFechasSalida do:[:fec| unasFechas:=unasFechas,fec toString,String crlf . 
+fechasDisponibles  do:[:fec| unasFechas:=unasFechas,fec toString,String crlf . 
 ]]
 ifNil:[''].
 ^unasFechas
@@ -171,32 +169,20 @@ Organizado >> toString [
 Organizado >> toStringExcursiones [ 
 |cadena|
 cadena:= 'Excusiones de viaje:',String crlf .
-colExcursiones do:[:ex | cadena:= cadena,'',ex toString ,String crlf  ].
+colExcursiones do:[:ex | cadena:= cadena,' ',ex toString ,String crlf  ].
 ^cadena
 ]
 
-{ #category : #'verificación' }
-Organizado >> verificarCupo: unaFecha cantPersonas: unaCantPersonas [
-"Verificar si esta disponible y si lo esta se modifica el cupo del viaje en la fecha"
-|unaFe rta |
-rta:=false.
-unaFe :=nil.
-unaFe := listaFechasSalida  detect:[:fec| (fec equals: unaFecha )].
-(unaFe  isNil)ifFalse: [ rta:=unaFe cupoPosible: unaCantPersonas ]. 
-^rta
- 
-]
-
-{ #category : #'verificación' }
+{ #category : #inicializador }
 Organizado >> verificarFecha: unaFecha cantPersonas: unaCantPersonas fechaVieja: fechaVieja [
 |fechaNu  fechaVi rta|
 rta :=false.
 ""
-fechaVi := listaFechasSalida detect:[: fecha | fecha equals: fechaVieja]ifNone:[nil].
-fechaNu := listaFechasSalida detect:[: fecha | fecha equals: unaFecha]ifNone:[nil].
+fechaVi := fechasDisponibles  detect:[: fecha | fecha equals: fechaVieja]ifNone:[nil].
+fechaNu := fechasDisponibles  detect:[: fecha | fecha equals: unaFecha]ifNone:[nil].
 
 (fechaVi isNotNil  & fechaNu isNotNil)ifTrue:[
-	(fechaNu cupoPosible: unaCantPersonas )ifTrue:[
+	(fechaNu verificarCupo: unaCantPersonas )ifTrue:[
 		fechaNu agregarCupos: unaCantPersonas .
 		self actualizarDisponibilidad: unaCantPersonas fechaSalida:unaFecha .
 		rta:=true.

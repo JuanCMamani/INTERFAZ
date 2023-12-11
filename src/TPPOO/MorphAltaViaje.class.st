@@ -7,7 +7,8 @@ Class {
 		'porcentaje',
 		'valorImp',
 		'crear',
-		'empresa'
+		'empresa',
+		'fechasDisponibles'
 	],
 	#category : #'TPPOO-componentes'
 }
@@ -28,9 +29,17 @@ MorphAltaViaje >> alert [
 ]
 
 { #category : #initialize }
+MorphAltaViaje >> imputFecha: wid [
+
+	fechasDisponibles := MorphFechaInput crearFechaImput: wid.
+	self addMorph: fechasDisponibles.
+	fechasDisponibles position: valorImp position + (0 @ 40)
+]
+
+{ #category : #initialize }
 MorphAltaViaje >> iniciarMorphAltaViaje:emp [
 
-	| text wid|
+	| text wid |
 	empresa := emp .
 	self extent: (500 @200).
 	self color: (Color r: 0.80 g: 0.8 b: 0.80).
@@ -38,27 +47,27 @@ MorphAltaViaje >> iniciarMorphAltaViaje:emp [
 	text := TextMorph new.
 	text contents: 'INGRESE LOS DATOS:'.
 	self addMorph: text.
-	wid := self width - 80 @ 0.
+	wid := self width - 80.
 	text position: self topCenter -(text width//2@(-4)). 
 	nombre := RubTextFieldMorph new.
 	nombre ghostText: '   Nombre del viaje'.
 	nombre color: Color white.
-	nombre extent: wid .
+	nombre extent: wid @0 .
 	nombre cornerStyle: #rounded.
 	preciXper := RubTextFieldMorph new.
 	preciXper ghostText: '   Precio x persona'.
 	preciXper color: Color white.
-	preciXper extent: wid .
+	preciXper extent: wid @0.
 	preciXper cornerStyle: #rounded.
 	porcentaje := RubTextFieldMorph new.
 	porcentaje ghostText: '   Porcentaje Plus'.
 	porcentaje color: Color white.
-	porcentaje extent: wid .
+	porcentaje extent: wid @0 .
 	porcentaje cornerStyle: #rounded.
 	valorImp := RubTextFieldMorph new.
 	valorImp ghostText: '   Valor impuesto'.
 	valorImp color: Color white.
-	valorImp extent: wid .
+	valorImp extent: wid @0 .
 	valorImp cornerStyle: #rounded.
 	self addMorph: nombre.
 	self addMorph: preciXper.
@@ -68,6 +77,7 @@ MorphAltaViaje >> iniciarMorphAltaViaje:emp [
 	preciXper position: nombre position + (0 @ 40).
 	porcentaje position: preciXper position + (0 @ 40).
 	valorImp position: porcentaje position + (0 @ 40).
+	self imputFecha: wid .
 	crear := Button new.
 	crear label: 'CREAR'.
 	crear extent: 200 @ 40.
@@ -77,5 +87,5 @@ MorphAltaViaje >> iniciarMorphAltaViaje:emp [
 
 { #category : #initialize }
 MorphAltaViaje >> verificaCondicion [
-^ (nombre text asString ~='')&( preciXper  text asString ~='')&(porcentaje text  asString ~='') &(valorImp text  asString ~='')
+^ (nombre text asString ~='')&( preciXper  text asString ~='')&(porcentaje text  asString ~='') &(valorImp text  asString ~='')& (fechasDisponibles verificaCondicion ).
 ]

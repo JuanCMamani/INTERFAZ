@@ -1,5 +1,5 @@
 Class {
-	#name : #SeachViaje,
+	#name : #MorphSeachViajeEntre,
 	#superclass : #Morph,
 	#instVars : [
 		'seachContainer',
@@ -13,15 +13,7 @@ Class {
 }
 
 { #category : #initialization }
-SeachViaje class >> crear [
-|var|
-var:= self new.
-var iniciarSeachViaje.
-^ var.
-]
-
-{ #category : #initialization }
-SeachViaje class >> crear: emp [
+MorphSeachViajeEntre class >> crear: emp [
 |var|
 var:= self new.
 var iniciarSeachViaje: emp.
@@ -29,7 +21,7 @@ var iniciarSeachViaje: emp.
 ]
 
 { #category : #initialize }
-SeachViaje >> actionSech [
+MorphSeachViajeEntre >> actionSech [
 
 	| mensaje |
 	input text asString = ''
@@ -53,7 +45,7 @@ SeachViaje >> actionSech [
 ]
 
 { #category : #initialize }
-SeachViaje >> contenDefault [
+MorphSeachViajeEntre >> contenDefault [
 	conten ifNotNil: [  conten delete].
 	conten := Morph new.
 	conten extent:(self width -30 @ 60).
@@ -64,13 +56,13 @@ SeachViaje >> contenDefault [
 ]
 
 { #category : #initialize }
-SeachViaje >> deleteViaje: nombreViaje [
+MorphSeachViajeEntre >> deleteViaje: nombreViaje [
 	contenInfo delete.
 	empresa deleteViaje:  nombreViaje.
 ]
 
 { #category : #accessing }
-SeachViaje >> generarInfo: nombreViaje [
+MorphSeachViajeEntre >> generarInfo: nombreViaje [
 |eliminar|
 (contenInfo isNotNil)ifTrue:[contenInfo delete].
 contenInfo := self verInfo: nombreViaje.
@@ -87,7 +79,7 @@ eliminar mouseAction: [self deleteViaje: nombreViaje  ].
 ]
 
 { #category : #accessing }
-SeachViaje >> generarItem: viaje size: size [ 
+MorphSeachViajeEntre >> generarItem: viaje size: size [ 
 | nom precio  box nombreV  precioV verInfo infoViaje font|
 	font := LogicalFont
 		        familyName: StandardFonts defaultFont familyName
@@ -120,7 +112,7 @@ SeachViaje >> generarItem: viaje size: size [
 ]
 
 { #category : #initialize }
-SeachViaje >> iniciarSeachViaje: emp [
+MorphSeachViajeEntre >> iniciarSeachViaje: emp [
 	self color:  Color red.
 	self extent: (500@ 140).
 	self cornerStyle: #rounded.
@@ -152,15 +144,15 @@ SeachViaje >> iniciarSeachViaje: emp [
 ]
 
 { #category : #initialize }
-SeachViaje >> newConten: newConten [
-	conten ifNotNil:[conten delete].
+MorphSeachViajeEntre >> newConten: newConten [
+
 	conten := newConten.
 	self addMorph: conten.
 	conten position: seachContainer bottomLeft + (10 @ 10)
 ]
 
 { #category : #initialize }
-SeachViaje >> return: nombre [
+MorphSeachViajeEntre >> return: nombre [
 	| vi wid   item |
 	item := nil.
 	wid := conten   width.
@@ -172,17 +164,17 @@ SeachViaje >> return: nombre [
 ]
 
 { #category : #accessing }
-SeachViaje >> update: unObjeto [
+MorphSeachViajeEntre >> update: unObjeto [
 unObjeto ifNotNil: [self contenDefault ].
 ]
 
 { #category : #accessing }
-SeachViaje >> updateView: val [
+MorphSeachViajeEntre >> updateView: val [
 self newConten: val.
 ]
 
 { #category : #initialize }
-SeachViaje >> verInfo: nombreViaje [
+MorphSeachViajeEntre >> verInfo: nombreViaje [
 |containerInfo viaje|
 	
 	viaje := empresa obtenerViajePorNombre: nombreViaje asString.

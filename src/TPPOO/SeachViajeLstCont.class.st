@@ -47,6 +47,7 @@ SeachViajeLstCont >> contratar: nom fecha: fe cant: text cuotas: num plus: paga 
 							         cantPersonas: text
 							         cantCuotas: num
 							         pagaPlus: plus.
+							self update: empresa .
 						exito
 							ifTrue: [ 
 								contenInfo  delete.
@@ -69,7 +70,7 @@ SeachViajeLstCont >> generarInfo: nombreViaje [
 	| contratar cantPersonas fechaSalida cantCuotas plus |
 	contenInfo isNotNil ifTrue: [ contenInfo delete ].
 	contenInfo := self verInfo: nombreViaje.
-	contenInfo extent: contenInfo extent +(0@80).
+	contenInfo extent: contenInfo extent +(0@125).
 	contratar := Button new.
 	contratar label: 'CONTRATAR'.
 	contratar extent: 100 @ 30.
@@ -101,7 +102,7 @@ SeachViajeLstCont >> generarInfo: nombreViaje [
 	cantCuotas bottomLeft: fechaSalida topLeft - (0 @ 10).
 
 	plus := RubTextFieldMorph new.
-	plus ghostText: 'Paga Plus S=si N=no'.
+	plus ghostText: 'Paga Plus S:si N:no'.
 	plus extent: 250 @ 5.
 	plus cornerStyle: #rounded.
 	contenInfo addMorph: plus.

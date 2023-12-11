@@ -32,14 +32,6 @@ FechaSalida >> cupoDisponible [
 ]
 
 { #category : #inicializador }
-FechaSalida >> cupoPosible: cant [
-^(cupo asInteger  -cant asInteger )>=0.
-
-
-
-]
-
-{ #category : #inicializador }
 FechaSalida >> descontarCupos: unNumero [
 cupo := cupo-unNumero asInteger .
 
@@ -73,14 +65,23 @@ FechaSalida >> getFecha [
 ]
 
 { #category : #inicializador }
-FechaSalida >> getInfo [ 
-|array|
-array := Array new:2.
-array add: fecha .
-array add: cupo .
-^ array .
+FechaSalida >> getInfo [
 
+	| array |
+	array := Array new: 2.
+	array at: 1 put: fecha.
+	array at: 2 put: cupo.
+	^ array
+]
 
+{ #category : #inicializador }
+FechaSalida >> getInfoFecha [
+
+	| array |
+	array := Array new: 2.
+	array at: 1 put: fecha.
+	array at: 2 put: cupo.
+	^ array
 ]
 
 { #category : #inicializador }
@@ -89,6 +90,11 @@ fecha := unaFecha .
 cupo := unCupo .
 
 
+]
+
+{ #category : #inicializador }
+FechaSalida >> menor: unaFecha [
+^fecha < unaFecha getFecha  .
 ]
 
 { #category : #inicializador }
@@ -114,6 +120,27 @@ FechaSalida >> toString [
 ]
 
 { #category : #inicializador }
+FechaSalida >> verificarCupo: cant [
+|var|
+var:=(cupo asInteger  -cant asInteger )>=0.
+var ifTrue: [self descontarCupos: cant.].
+^var.
+
+
+
+]
+
+{ #category : #inicializador }
 FechaSalida >> verificarDisponibleEntre: fecha1 y:fecha2 [
-^(fecha1 <= fecha   and: fecha <= fecha2 )&(cupo >0)
+^(fecha1 <= fecha   and: fecha <= fecha2 )&(cupo asInteger  >0)
+]
+
+{ #category : #inicializador }
+FechaSalida >> verificarFecha: unaFecha [
+^ fecha = unaFecha .
+]
+
+{ #category : #inicializador }
+FechaSalida >> verificarFechaSalida: unaFecha [
+^(fecha = unaFecha getFecha )&(cupo = unaFecha getCupo) .
 ]

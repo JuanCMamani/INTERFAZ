@@ -4,89 +4,66 @@ Class {
 	#instVars : [
 		'ciudad',
 		'actividad',
-		'fechaRegreso',
-		'fechaSalida',
-		'disponibilidad'
+		'fechaRegreso'
 	],
 	#category : #'TPPOO-class'
 }
 
 { #category : #constructor }
-Especial class >> crearCon: unNombre precioBase: unPrecioBase valorImpuesto: unValorImpuesto ciudad: unaCiudad actividad: unaActividad fechaRegreso: unaFechaRegreso fechaSalidaCupo: unaFechaYcupo valorDelPlus: unvalor [
+Especial class >> crearCon: unNombre  precioBase: unPrecioBase valorImpuesto: unValorImpuesto valorDelPlus: unvalor fechasDisponibles: unaCol ciudad: unaCiudad actividad: unaActividad fechaRegreso: unaFechaRegreso [ 
 	| unEspecial |
 	unEspecial := self
-		              crearCon: unNombre
-		              precioBase: unPrecioBase
-		              valorImpuesto: unValorImpuesto
-						  valorDelPlus: unvalor.
+		              crearCon: unNombre  precioBase: unPrecioBase valorImpuesto: unValorImpuesto valorDelPlus: unvalor fechasDisponibles: unaCol.
 	unEspecial
 		inicializarCon: unaCiudad
 		actividad: unaActividad
-		fechaRegreso: unaFechaRegreso
-		fechaSalidayCupo: unaFechaYcupo.
+		fechaRegreso: unaFechaRegreso.
 	^ unEspecial
 ]
 
 { #category : #metodos }
 Especial >> actualizarDisponibilidad:unNumero [
-fechaSalida agregarCupos:unNumero.
-]
-
-{ #category : #metodos }
-Especial >> disponibleEntre: fecha1 y: fecha2 [
-|rta|
-rta:= false.
-(fechaSalida verificarDisponibleEntre: fecha1  y: fecha2  )
-ifTrue: [  rta := true].
-^rta
+fechasDisponibles  agregarCupos:unNumero.
 ]
 
 { #category : #visualizadores }
 Especial >> getFechaSalida [
-^ fechaSalida  .
+^ (fechasDisponibles first) getFecha   .
 ]
 
 { #category : #visualizadores }
 Especial >> getFechaSalidaYcupo [
-^ fechaSalida .
+^ fechasDisponibles  .
 ]
 
 { #category : #'verificación' }
 Especial >> getInfo [ 
-|var ciud act feS feR x disp |
+|var     x  |
 var:= super getInfo.
-	ciud := ciudad  asString.
-	act := actividad  asString.
-	feS := (fechaSalida  ) asString.
-	feR := fechaRegreso  asString.
-	disp:= (disponibilidad   )asString.
-	x := Array new: 5.
+	x := Array new: 3.
 	x
-		at: 1 put: ciud;
-		at: 2 put: act;
-		at: 3 put: feS;
-		at: 4 put: feR;
-		at: 5 put: disp .
+		at: 1 put: ciudad;
+		at: 2 put: actividad;
+		at: 3 put: fechaRegreso.
 	^(var,x).
 ]
 
 { #category : #printing }
-Especial >> inicializarCon: unaCiudad actividad: unaActividad fechaRegreso: unaFechaRegreso fechaSalidayCupo: unaFechaYcupo [
-ciudad := unaCiudad.
-actividad := unaActividad.
-fechaRegreso := unaFechaRegreso .
-fechaSalida := unaFechaYcupo getFecha .
-disponibilidad := unaFechaYcupo getCupo .
+Especial >> inicializarCon: unaCiudad actividad: unaActividad fechaRegreso: unaFechaRegreso [
+
+	ciudad := unaCiudad.
+	actividad := unaActividad.
+	fechaRegreso := unaFechaRegreso
 ]
 
 { #category : #printing }
 Especial >> mostrarFechas [ 
-^fechaSalida toString.
+^fechasDisponibles toString.
 ]
 
 { #category : #visualizadores }
 Especial >> obtenerFecha [
-^fechaSalida getFecha 
+^fechasDisponibles  getFecha 
 ]
 
 { #category : #metodos }
@@ -107,11 +84,11 @@ ifFalse:[(unaOpcion=3)
 			ifTrue:[fechaRegreso setFechaSalida:unIngreso]
 			ifFalse:[(unaOpcion=6)
 					
-				ifTrue:[fechaSalida  := unIngreso.
+				ifTrue:[fechasDisponibles verificarFecha:  unIngreso.
 					viajeModificado := self.]
 				ifFalse:[(unaOpcion=7)
 						
-					ifTrue:[fechaSalida setCupo: unIngreso]
+					ifTrue:[fechasDisponibles  setCupo: unIngreso]
 					ifFalse:[exito:=false]]]]]].
 
 ^viajeModificado
@@ -135,22 +112,12 @@ fechaRegreso := unFecha.
 
 { #category : #modificadores }
 Especial >> setFechaSalida: unFecha [
-fechaSalida setFecha: unFecha.
+fechasDisponibles  setFecha: unFecha.
 ]
 
 { #category : #printing }
 Especial >> toString [ 
-^ (super toString  )asString,',ciudad: ',ciudad asString ,',Fecha Regreso:',fechaRegreso asString,' Fecha Salida:',fechaSalida asString ,' Cupo:',disponibilidad  asString.
-]
-
-{ #category : #'verificación' }
-Especial >> verificarCupo: unaFecha cantPersonas: unaCantPersonas [
-|exito|
-exito := false.
-( disponibilidad -(unaCantPersonas asInteger ) >=0 )
-ifTrue:[exito := true.
-	disponibilidad := disponibilidad -(unaCantPersonas asInteger )  ].
-^exito
+^ (super toString  )asString,',ciudad: ',ciudad asString ,',Fecha Regreso:',fechaRegreso asString,' Fecha Salida:',(fechasDisponibles first ) toString.
 ]
 
 { #category : #'verificación' }

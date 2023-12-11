@@ -3,6 +3,7 @@ Class {
 	#superclass : #Morph,
 	#instVars : [
 		'nom',
+		'id',
 		'vi',
 		'feV',
 		'fe',
@@ -14,7 +15,8 @@ Class {
 		'cerrar',
 		'font',
 		'pagado',
-		'contrato'
+		'contrato',
+		'colExcurisones'
 	],
 	#category : #'TPPOO-componentes'
 }
@@ -26,6 +28,11 @@ var:= self new.
 var iniciarInfoMorphContrato: contrato  .
 ^var.
 
+]
+
+{ #category : #visualizadores }
+MorphInfoContrato >> getId [
+^id.
 ]
 
 { #category : #visualizadores }
@@ -41,10 +48,11 @@ MorphInfoContrato >> iniciarInfoMorphContrato: elCont [
 	font := LogicalFont
 		        familyName: StandardFonts defaultFont familyName
 		        pointSize: 13.
-	self extent: 330 @ 400.
-	self color: (Color r: 0.5 g: 0.7 b: 0.9).
+	self extent: 330 @450.
+	self color: (Color r: 0.9 g: 0.9 b: 0.9).
 	self cornerStyle: #rounded.
 	array := contrato   getInfo.
+	id:= array at:1.
 	nom := StringMorph
 		       contents: '  ID: ' , (array at: 1) asString
 		       font: font
@@ -76,7 +84,7 @@ MorphInfoContrato >> iniciarInfoMorphContrato: elCont [
 		         emphasis: TextEmphasis bold.
 	excursiones := StringMorph
 		               contents:
-		               '  Excursiones: ' , (array at: 8) asString
+		               '  Excursiones: ' 
 		               font: font
 		               emphasis: TextEmphasis bold.
 	pagado := StringMorph

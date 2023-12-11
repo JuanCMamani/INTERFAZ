@@ -163,6 +163,11 @@ var:= viajes detect:[:vi| vi verificarNombre: nombre] ifNone: [nil].
 ^var.
 ]
 
+{ #category : #visualizadores }
+EmpresaTurismo >> actualizacionNecesaria [
+self  changed .
+]
+
 { #category : #ABM }
 EmpresaTurismo >> altaViajeE: unNombre  precioBase: unPrecioBase valorImpuesto: unValorImpuesto ciudad: unaCiudad actividad: unaActividad fechaRegreso: unaFechaRegreso fechaSalida: unaFechaSalida diponibilidad: unaCantidad valorDelPlus: unValor [
 
@@ -266,7 +271,7 @@ EmpresaTurismo >> obtenenerVijes [
 { #category : #visualizadores }
 EmpresaTurismo >> obtenerCliente:unDni [
 |cliente|
-cliente := colClientes detect: [ :unCl 	|unCl verificarCliente: unDni  ] ifNone:[^nil].
+cliente := colClientes detect: [ :unCl 	|unCl verificarCliente: unDni  ] ifNone:[nil].
 	^cliente .  
 ]
 

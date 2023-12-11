@@ -12,54 +12,37 @@ Class {
 	#category : #'TPPOO-class'
 }
 
-{ #category : #constructor }
-Etapa class >> crearCon:info cantDias:unaCantDias lugar: unLugar tipoPension: unTipoPension hotel: unHotel [ 
-"constructor 2"
-|unaEtapa|
-unaEtapa := self new.
-unaEtapa inicializarCon:info cantDias:unaCantDias lugar: unLugar tipoPension: unTipoPension hotel: unHotel  .
-^unaEtapa
-]
-
-{ #category : #constructor }
+{ #category : #initialization }
 Etapa class >> crearCon:info cantDias:unaCantDias lugar: unLugar tipoPension: unTipoPension hotel: unHotel listaActividades: unaListaActividades [ 
 "contructor 1"
 |unaEtapa |
 unaEtapa := self new.
-unaEtapa inicializarCon:info cantDias:unaCantDias lugar: unLugar tipoPension: unTipoPension hotel: unHotel actividades: unaListaActividades 
+unaEtapa inicializarCon:info cantDias:unaCantDias lugar: unLugar tipoPension: unTipoPension hotel: unHotel actividades: unaListaActividades .
+^ unaEtapa .
 ]
 
-{ #category : #constructor }
-Etapa class >> nextId [
-| id |
-    nro := nro ifNil: [1].
-    id := nro.
-    nro := nro  + 1.
-    ^id
-]
-
-{ #category : #constructor }
-Etapa class >> resetNro [
-nro:=nil.
-]
-
-{ #category : #inicializador }
+{ #category : #initialization }
 Etapa >> cargarActividad: unaActividad [
 listaActividades add: unaActividad.
+
 ]
 
-{ #category : #inicializador }
-Etapa >> inicializarCon:info cantDias:unaCantDias lugar: unLugar tipoPension: unTipoPension hotel: unHotel [.
-"se agrega un segundo contructor como posibilidad de inicializar"
-infoDia :=info.
-cantDias := unaCantDias .
-lugar := unLugar .
-tipoPension := unTipoPension .
-hotel := unHotel .
-listaActividades := OrderedCollection new .
+{ #category : #printing }
+Etapa >> getInfo [ 
+| x |
+x:= Array new:6.
+x at: 1 put: infoDia .
+x at: 2 put: cantDias  .
+x at: 3 put: lugar  .
+x at: 4 put: tipoPension  .
+x at: 5 put: hotel  .
+x at: 6 put: listaActividades  .
+^ x.
+
+
 ]
 
-{ #category : #inicializador }
+{ #category : #initialization }
 Etapa >> inicializarCon:info cantDias:unaCantDias lugar: unLugar tipoPension: unTipoPension hotel: unHotel actividades: unaListaActividades [
 infoDia :=info.
 cantDias := unaCantDias .
@@ -67,14 +50,17 @@ lugar := unLugar .
 tipoPension := unTipoPension .
 hotel := unHotel .
 listaActividades := unaListaActividades.
+
 ]
 
 { #category : #printing }
 Etapa >> toString [
 ^ 'InfoDia:',infoDia asString ,'|'
+
+
 ]
 
-{ #category : #'verificación' }
+{ #category : #initialization }
 Etapa >> verificarInfoDia: unaInfoDia [
 ^infoDia = unaInfoDia
 
